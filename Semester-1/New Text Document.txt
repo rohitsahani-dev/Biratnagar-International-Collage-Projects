@@ -1,0 +1,8 @@
+@echo off
+
+set source=C:\Users\Public\Documents
+set destination=D:\Desktop\Documents
+
+xcopy "%source%" "%destination%" /E /I /Y
+
+echo Backup completed on %date% at %time%

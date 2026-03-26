@@ -1,0 +1,208 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Weather App</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #020617;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      color: #e5e7eb;
+    }
+
+    .container {
+      width: 440px;
+      padding: 30px 28px 32px;
+      background: #020617;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      text-align: center;
+    }
+
+    h1 {
+      margin: 0 0 18px;
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: 0.4px;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: transparent;
+      color: #e5e7eb;
+      font-size: 14px;
+      outline: none;
+      margin-bottom: 12px;
+    }
+
+    input::placeholder {
+      color: #94a3b8;
+    }
+
+    input:focus {
+      border-color: #38bdf8;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      border-radius: 8px;
+      border: none;
+      background: #2563eb;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1d4ed8;
+    }
+
+    #weatherResult {
+      margin-top: 22px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    /* Main info centered */
+    #weatherResult h2 {
+      margin: 0;
+      font-size: 26px;
+      font-weight: 600;
+    }
+
+    #weatherResult p.date {
+      font-size: 13px;
+      color: #94a3b8;
+      margin-bottom: 10px;
+    }
+
+    #weatherResult img {
+      width: 90px;
+      margin: 12px auto;
+      display: block;
+    }
+
+    #weatherResult p.condition {
+      font-size: 15px;
+      margin-top: 6px;
+      font-weight: 500;
+    }
+
+    /* Stats grid */
+    .weather-grid {
+      display: grid;
+      grid-template-columns: 2.5fr 1.5fr;
+      gap: 12px 16px;
+      margin-top: 18px;
+      text-align: left;
+    }
+
+    .weather-grid p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.5;
+      color: #cbd5f5;
+    }
+
+    .weather-grid p b {
+      color: #f8fafc;
+      font-weight: 600;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Weather App</h1>
+    <input type="text" id="cityInput" placeholder="Enter city name (Eg. Newcastle)">
+    <button id="searchButton">Search</button>
+
+    <div id="weatherResult">
+      <p>Loading Newcastle weather...</p>
+    </div>
+  </div>
+
+  <script>
+    const apiKey = "474b8d92e02497bc5dea323ab646b3af";
+    const defaultCity = "Newcastle";
+    const searchButton = document.getElementById("searchButton");
+    const cityInput = document.getElementById("cityInput");
+    const weatherResult = document.getElementById("weatherResult");
+
+    searchButton.addEventListener("click", () => {
+      const city = cityInput.value;
+      getWeather(city);
+    });
+
+    function formatTime(unix) {
+      return new Date(unix * 1000).toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    }
+
+    function windDirection(deg) {
+      const dirs = ["N","NE","E","SE","S","SW","W","NW"];
+      return dirs[Math.round(deg / 45) % 8];
+    }
+
+    async function getWeather(city) {
+      try {
+        const response = await fetch(`weather.php?city=${city}`);
+
+        if (!response.ok) {
+          throw new Error("City not found");
+        }
+
+        const data = await response.json();
+        const date = new Date().toDateString();
+        const iconUrl = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+
+        weatherResult.innerHTML = `
+          <h2>${data.name}, ${data.sys.country}</h2>
+          <p class="date">${date}</p>
+          <img src="${iconUrl}" alt="Weather Icon">
+
+          <p class="condition"><b>${data.weather[0].main}</b> - ${data.weather[0].description}</p>
+
+          <div class="weather-grid">
+            <p><b>Temperature:</b> ${data.main.temp} °C</p>
+            <p><b>Feels Like:</b> ${data.main.feels_like} °C</p>
+            <p><b>Min / Max:</b> ${data.main.temp_min}°C /${data.main.temp_max}°C</p>
+            <p><b>Humidity:</b> ${data.main.humidity} %</p>
+            <p><b>Pressure:</b> ${data.main.pressure} hPa</p>
+            <p><b>Wind:</b> ${data.wind.speed} m/s (${windDirection(data.wind.deg)})</p>
+            <p><b>Visibility:</b> ${data.visibility / 1000} km</p>
+            <p><b>Cloudiness:</b> ${data.clouds.all} %</p>
+            <p><b>Sunrise:</b> ${formatTime(data.sys.sunrise)}</p>
+            <p><b>Sunset:</b> ${formatTime(data.sys.sunset)}</p>
+          </div>
+        `;
+      } catch (error) {
+        weatherResult.innerHTML = "City not found";
+        console.log(error);
+      }
+    }
+
+    getWeather(defaultCity);
+  </script>
+</body>
+</html>
