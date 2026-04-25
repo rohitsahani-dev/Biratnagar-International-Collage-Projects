@@ -29,7 +29,9 @@ Biratnagar-International-Collage-Projects/
 │   │   ├── Rohit_Sahani_Python_WorkShop_3.docx  
 │   │   ├── Rohit_Sahani_Python_WorkShop_4.docx  
 │   │   ├── Rohit_Sahani_Python_WorkShop_5.docx  
-│   │   └── Rohit_Sahani_Python_WorkShop_6.docx  
+│   │   └── Rohit_Sahani_Python_WorkShop_6.docx 
+│   │   └── Rohit_Sahani_Python_WorkShop_7.docx  
+
 
 │   ├── OOP_JAVA/  
 │   │   ├── Rohit_Sahani_WorkShop_1_JAVA  
@@ -38,6 +40,7 @@ Biratnagar-International-Collage-Projects/
 │   │   ├── Rohit_Sahani_WorkShop_4_JAVA  
 │   │   ├── Rohit_Sahani_WorkShop_5_JAVA  
 │   │   └── Rohit_Sahani_WorkShop_6_JAVA  
+
 
 │  
 └── (More semesters and projects will be added in future)
