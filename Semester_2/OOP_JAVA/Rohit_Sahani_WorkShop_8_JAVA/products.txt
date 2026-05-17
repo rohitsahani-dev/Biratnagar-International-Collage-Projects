@@ -1,0 +1,15 @@
+Apple;120
+Apple;130
+Apple;110
+Banana;50
+Banana;60
+Banana;55
+Orange;80
+Orange;90
+Orange;85
+Mango;150
+Mango;160
+Mango;170
+Grapes;200
+Grapes;210
+Grapes;190
